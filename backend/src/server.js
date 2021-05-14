@@ -15,13 +15,14 @@ app.get("/imgs", async (req, res) => {
   res.send(result);
 });
 
-app.post("/uploadImg",  (req, res) => {
-  let { id,img,name,message } = req.body;
+app.post("/uploadImg", (req, res) => {
+  let { id, img, name, message } = req.body;
   let task1 = new Task({
     id: id,
     img: img,
-    name:name,
-    message:message
+    name: name,
+    message: message,
+    createDate: Date.now(),
   });
   // console.log(id,name);
   (async () => {
@@ -30,7 +31,7 @@ app.post("/uploadImg",  (req, res) => {
   })();
 });
 
-app.delete("/delete",  (req, res) => {
+app.delete("/delete", (req, res) => {
   let { id } = req.query;
   (async () => {
     await Task.findOneAndRemove(id);
@@ -38,15 +39,15 @@ app.delete("/delete",  (req, res) => {
   })();
 });
 
-app.put("/update",  (req, res) => {
-  let { id,img } = req.body;
+app.put("/update", (req, res) => {
+  let { id, img } = req.body;
   // console.log(id,img)
   (async () => {
     await Task.findOneAndUpdate(id, {
-      img: img
-    })
+      img: img,
+    });
     res.send();
   })();
-})
+});
 
 module.exports = app;

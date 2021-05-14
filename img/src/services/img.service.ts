@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ImgService {
   Imgs: any;
@@ -15,14 +15,20 @@ export class ImgService {
     return Math.floor(Math.random() * 999999);
   }
 
-  onFileUpload(event, id,message) {
+  onFileUpload(event, id, message) {
     this.selecetdFile = event.target.files[0];
 
     const reader = new FileReader();
     reader.onload = () => {
       this.img = reader.result as string;
       if (id == -1) {
-        this.newUpload(this.img, this.getRandomId(), event.target.files[0].name,message);
+        this.newUpload(
+          this.img,
+          this.getRandomId(),
+          event.target.files[0].name,
+          message,
+          Date
+        );
       } else {
         this.updateImg(this.img, id);
       }
@@ -30,36 +36,35 @@ export class ImgService {
     reader.readAsDataURL(this.selecetdFile);
   }
 
-
-
-  async newUpload(img, id, name,message) {
+  async newUpload(img, id, name, message, creatDate) {
     let data = {
       id: id,
       img: img,
       name: name,
-      message:message
-    }
-    await this.http.post(environment.endpoint + "uploadImg", data).toPromise();
+      message: message,
+      creatDate: creatDate,
+    };
+    await this.http.post(environment.endpoint + 'uploadImg', data).toPromise();
     this.getData();
   }
   async getData() {
-    this.Imgs = await this.http.get(environment.endpoint + "imgs").toPromise();
+    this.Imgs = await this.http.get(environment.endpoint + 'imgs').toPromise();
   }
 
   async updateImg(img, id) {
     let data = {
       id: id,
-      img: img
-    }
-    await this.http.put(environment.endpoint + "update", data).toPromise();
+      img: img,
+    };
+    await this.http.put(environment.endpoint + 'update', data).toPromise();
 
     this.getData();
   }
 
   async delImg(id) {
-    await this.http.delete(environment.endpoint + "delete?id=" + id).toPromise();
+    await this.http
+      .delete(environment.endpoint + 'delete?id=' + id)
+      .toPromise();
     this.getData();
   }
-
-
 }

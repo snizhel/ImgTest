@@ -4,24 +4,19 @@ import { ImgService } from 'src/services/img.service';
 @Component({
   selector: 'app-img-card',
   templateUrl: './img-card.component.html',
-  styleUrls: ['./img-card.component.scss']
+  styleUrls: ['./img-card.component.scss'],
 })
 export class ImgCardComponent implements OnInit {
-  imgs:any;
-  constructor(public imgSer:ImgService) { }
+  imgs: any;
+  constructor(public imgSer: ImgService) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-    
-  }
-
-
-  onFileUpload(event,id) {
+  onFileUpload(event, id) {
     // this.imgSer.onFileUpload(event,"update");
-    this.imgSer.onFileUpload(event,id,"none");
-
+    this.imgSer.onFileUpload(event, id, 'none');
   }
-  del(id){
+  del(id) {
     this.imgSer.delImg(id);
   }
 }
